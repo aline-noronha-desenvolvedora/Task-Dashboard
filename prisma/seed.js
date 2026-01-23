@@ -17,12 +17,12 @@ async function main() {
     });
 
     console.log("Admin user ready:", admin);
-    
+
     await prisma.task.upsert({
         where: { title: "Study for 1 hour" },
         update: {
             status: "pending",
-            completedAt: null, 
+            completedAt: null,
         },
         create: {
             title: "Study for 1 hour",
@@ -38,7 +38,7 @@ async function main() {
         where: { title: "Run 5 km" },
         update: {
             status: "in_progress",
-            completedAt: null, // still running
+            completedAt: null,
         },
         create: {
             title: "Run 5 km",
@@ -61,7 +61,7 @@ async function main() {
             description: "Spend one hour reading a book or article",
             status: "completed",
             category: "personal growth",
-            completedAt: new Date(), 
+            completedAt: new Date(),
             userId: admin.id,
         },
     });
