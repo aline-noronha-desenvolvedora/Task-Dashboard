@@ -1,0 +1,11 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `createdAt` on the `Task` table. All the data in the column will be lost.
+
+*/
+-- DropIndex
+DROP INDEX `Task_title_key` ON `Task`;
+
+-- AlterTable
+ALTER TABLE `Task` DROP COLUMN `createdAt`;

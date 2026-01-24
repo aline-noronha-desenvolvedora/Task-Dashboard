@@ -6,15 +6,17 @@ import {
     updateTask,
     deleteTask,
 } from "../controllers/taskController.js";
-import {healthCheck} from "../controllers/healthController.js";
+import { healthCheck } from "../controllers/healthController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = Router();
 
 router.get("/health", healthCheck);
-router.post("/tasks", createTask);      
-router.get("/tasks", getTasks);         
-router.get("/tasks/:id", getTaskById);  
-router.put("/tasks/:id", updateTask);   
-router.delete("/tasks/:id", deleteTask);
+
+router.post("/tasks", authMiddleware, createTask);
+router.get("/tasks", authMiddleware, getTasks);
+router.get("/tasks/:id", authMiddleware, getTaskById);
+router.put("/tasks/:id", authMiddleware, updateTask);
+router.delete("/tasks/:id", authMiddleware, deleteTask);
 
 export default router;

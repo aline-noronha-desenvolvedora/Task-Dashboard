@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model User {
@@ -17,11 +17,10 @@ model User {
 
 model Task {
   id          Int       @id @default(autoincrement())
-  title       String    @unique
+  title       String
   description String?
   status      String
   category    String?
-  createdAt   DateTime  @default(now())
   completedAt DateTime?
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
