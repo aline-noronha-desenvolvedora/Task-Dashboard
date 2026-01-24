@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 
-export default function Register() {
-    const [name, setName] = useState("");      
+export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
@@ -11,26 +10,22 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await api.post("/register", { name, email, password }); 
-            alert("Registration successful!");
-            navigate("/");
+            const res = await api.post("/login", { email, password });
+            alert(res.data.message);
+
+            localStorage.setItem("token", res.data.token);
+
+            navigate("/dashboard");
         } catch (err) {
-            alert(err.response?.data?.error || "Registration failed");
+            alert(err.response?.data?.error || "Login failed");
         }
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-sm bg-white p-6 rounded shadow">
-                <h1 className="text-2xl font-bold mb-4 text-center">Register</h1>
+                <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        className="w-full px-3 py-2 border rounded"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
                     <input
                         type="email"
                         placeholder="Email"
@@ -47,11 +42,18 @@ export default function Register() {
                     />
                     <button
                         type="submit"
-                        className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
                     >
-                        Sign up
+                        Sign in
                     </button>
                 </form>
+
+                <p className="mt-4 text-center">
+                    Don’t have an account?{" "}
+                    <Link to="/register" className="text-blue-600 hover:underline">
+                        Sign up here
+                    </Link>
+                </p>
             </div>
         </div>
     );
