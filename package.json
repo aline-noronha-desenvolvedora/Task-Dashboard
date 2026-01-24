@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "seed": "node prisma/seed.js"
-  },
+  "dev": "nodemon src/server.js", 
+  "seed": "node prisma/seed.js"  },
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
