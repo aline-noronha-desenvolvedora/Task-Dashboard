@@ -23,7 +23,7 @@ export const createTask = async (req, res) => {
 
         res.status(201).json(task);
     } catch {
-        res.status(500).json({ error: "Error to create task" });
+        res.status(500).json({ error: "Error creating task" });
     }
 };
 
@@ -36,7 +36,7 @@ export const getTaskById = async (req, res) => {
         if (!task) return res.status(404).json({ error: "Task not found" });
         res.json(task);
     } catch {
-        res.status(500).json({ error: "Error to get task by id" });
+        res.status(500).json({ error: "Error getting task by id" });
     }
 };
 
@@ -48,8 +48,8 @@ export const updateTask = async (req, res) => {
         const error = validateTaskUpdate({ status, completedAt });
         if (error) return res.status(400).json({ error });
 
-        const updatedTask = await prisma.task.update({
-            where: { id: Number(id) },
+        const updatedTask = await prisma.task.updateMany({
+            where: { id: Number(id), userId: req.user.id },
             data: {
                 title,
                 description,
@@ -59,18 +59,30 @@ export const updateTask = async (req, res) => {
             },
         });
 
-        res.json(updatedTask);
+        if (updatedTask.count === 0) {
+            return res.status(404).json({ error: "Task not found" });
+        }
+
+        res.json({ message: "Task updated successfully" });
     } catch {
-        res.status(500).json({ error: "Error to update task" });
+        res.status(500).json({ error: "Error updating task" });
     }
 };
 
 export const deleteTask = async (req, res) => {
     try {
         const { id } = req.params;
-        await prisma.task.delete({ where: { id: Number(id), userId: req.user.id } });
+
+        const deletedTask = await prisma.task.deleteMany({
+            where: { id: Number(id), userId: req.user.id },
+        });
+
+        if (deletedTask.count === 0) {
+            return res.status(404).json({ error: "Task not found" });
+        }
+
         res.json({ message: "Task successfully deleted." });
     } catch {
-        res.status(500).json({ error: "Error to delete task" });
+        res.status(500).json({ error: "Error deleting task" });
     }
 };
