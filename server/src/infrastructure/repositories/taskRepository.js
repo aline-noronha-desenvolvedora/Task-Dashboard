@@ -10,16 +10,16 @@ async function findById(id, userId) {
     });
 }
 
-async function findByFilters(filters, orderBy) {
-    const { userId, title, completed } = filters;
+async function findByFilters(filters, orderBy, orderDirection) {
+    const { userId, title, status } = filters;
 
     return await prisma.task.findMany({
         where: {
             userId,
             ...(title ? { title: { contains: title } } : {}),
-            ...(completed !== undefined ? { completed: completed === "true" } : {})
+            ...(status ? { status } : {})
         },
-        orderBy: orderBy ? { createdAt: orderBy } : undefined
+        orderBy: orderBy ? { [orderBy]: orderDirection || "asc" } : undefined
     });
 }
 

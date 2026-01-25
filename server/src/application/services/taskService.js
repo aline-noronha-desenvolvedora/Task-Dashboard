@@ -12,10 +12,9 @@ async function getTaskById(id, userId) {
     return task ? new Task(task) : null;
 }
 
-async function getTasks(filters, userId) {
-    const tasks = await taskRepository.findByFilters({ ...filters, userId }, filters.orderBy || undefined);
-    return tasks.map(t => new Task(t));
-}
+async function getTasks(filters, userId) { 
+    const { orderBy, orderDirection, ...rest } = filters; 
+    return await taskRepository.findByFilters({ ...rest, userId }, orderBy, orderDirection); }
 
 async function updateTask(id, data, userId) {
     const task = await taskRepository.update(id, data, userId);
