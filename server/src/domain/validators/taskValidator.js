@@ -4,7 +4,7 @@ export function validateTaskCreate({ title, status, completedAt }) {
     }
 
     const validStatuses = ["pending", "in_progress", "completed"];
-    if (!validStatuses.includes(status)) {
+    if (status && !validStatuses.includes(status)) {
         return "Invalid status";
     }
 

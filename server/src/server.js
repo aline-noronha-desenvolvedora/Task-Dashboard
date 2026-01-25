@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 
-import taskRoutes from "./routes/taskRoutes.js";
-import healthRoutes from "./routes/healthRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
+import authRoutes from "./presentation/routes/authRoutes.js";
+import taskRoutes from "./presentation/routes/taskRoutes.js";
+import healthRoutes from "./presentation/routes/healthRoutes.js";
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/api", authRoutes);
-app.use("/api", taskRoutes);
+app.use("/api/tasks", taskRoutes);
 app.use("/api", healthRoutes);
 
 const PORT = process.env.PORT || 3000;
