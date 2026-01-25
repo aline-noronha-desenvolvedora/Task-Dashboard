@@ -48,21 +48,61 @@ Front-end built with React and back-end with Node.js/Express, integrated with a 
 ---
 
 ## Project Structure
-
 ```text
 project-root/
 │
 ├── backend/
-│   ├── src/            
-│   ├── prisma/         
+│   ├── src/
+│   │   ├── application/
+│   │   │   └── services/
+│   │   │       └── taskService.js
+│   │   │
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── Task.js
+│   │   │   └── validators/
+│   │   │   │   └── taskValidator.js
+│   │   │
+│   │   ├── infrastructure/
+│   │   │   ├── config/
+│   │   │   │   └── prisma.js
+│   │   │   ├── providers/
+│   │   │   │   └── jwtProvider.js
+│   │   │   └── repositories/
+│   │   │   │   └── taskRepository.js   
+│   │   │
+│   │   └── presentation/
+│   │       ├── controllers/
+│   │       │   └── taskController.js   
+│   │       ├── middlewares/
+│   │       │   └── authMiddleware.js
+│   │       └── routes/
+│   │           └── taskRoutes.js        
+│   │
+│   ├── prisma/
+│   │   └── schema.prisma
+│   │
 │   └── package.json
 │
 ├── frontend/
-│   ├── src/            
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── TaskList.jsx
+│   │   │   ├── TaskForm.jsx
+│   │   │   ├── Filters.jsx
+│   │   │   └── Chart.jsx                
+│   │   │
+│   │   ├── pages/
+│   │   │   └── Dashboard.jsx            
+│   │   │
+│   │   └── services/
+│   │       └── api.js                   
+│   │
 │   └── package.json
 │
 └── README.md
 ```
+---
 
 ---
 
