@@ -3,6 +3,12 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+function daysAgo(numDays) {
+    const d = new Date();
+    d.setDate(d.getDate() - numDays);
+    return d;
+}
+
 async function main() {
     const hashedPassword = await bcrypt.hash("Admin123!", 10);
 
@@ -18,53 +24,71 @@ async function main() {
 
     console.log("Admin user ready:", admin);
 
-    await prisma.task.upsert({
-        where: { title: "Study for 1 hour" },
-        update: {
+    const tasks = [
+        {
+            title: "Study",
+            description: "Dedicate to focused on study",
             status: "pending",
+            category: "Personal Growth",
             completedAt: null,
         },
-        create: {
-            title: "Study for 1 hour",
-            description: "Dedicate one hour to focused study every day",
-            status: "pending",
-            category: "personal development",
-            completedAt: null,
-            userId: admin.id,
-        },
-    });
-
-    await prisma.task.upsert({
-        where: { title: "Run 5 km" },
-        update: {
-            status: "in_progress",
-            completedAt: null,
-        },
-        create: {
+        {
             title: "Run 5 km",
             description: "Go for a 5 km run to stay healthy",
             status: "in_progress",
-            category: "fitness",
+            category: "Fitness",
             completedAt: null,
-            userId: admin.id,
         },
-    });
+        {
+            title: "Read",
+            description: "Spend time to reading a book or article.",
+            status: "completed",
+            category: "Personal Growth",
+            completedAt: daysAgo(2),
+        },
+        {
+            title: "Drink water",
+            description: "Drink water to stay hydrated.",
+            status: "completed",
+            category: "Health",
+            completedAt: daysAgo(3),
+        },
+        {
+            title: "Sleep 8 hours a day",
+            description: "Sleeping to improve health.",
+            status: "in_progress",
+            category: "Health",
+            completedAt: null,
+        },
+        {
+            title: "Meditate",
+            description: "Practice mindfulness meditation.",
+            status: "pending",
+            category: "Wellness",
+            completedAt: null,
+        },
+        {
+            title: "Finish project report",
+            description: "Complete the final draft of the project report.",
+            status: "in_progress",
+            category: "Work",
+            completedAt: null,
+        }
+    ];
 
-    await prisma.task.upsert({
-        where: { title: "Read for 1 hour" },
-        update: {
-            status: "completed",
-            completedAt: new Date(),
-        },
-        create: {
-            title: "Read for 1 hour",
-            description: "Spend one hour reading a book or article",
-            status: "completed",
-            category: "personal growth",
-            completedAt: new Date(),
-            userId: admin.id,
-        },
-    });
+    for (const task of tasks) {
+        await prisma.task.upsert({
+            where: { title: task.title },
+            update: {
+                status: task.status,
+                completedAt: task.completedAt,
+            },
+            create: {
+                ...task,
+                userId: admin.id,
+            },
+        });
+    }
 
     console.log("Tasks ready!");
 }
