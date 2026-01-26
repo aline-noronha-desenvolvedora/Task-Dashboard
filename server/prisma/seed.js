@@ -30,6 +30,7 @@ async function main() {
             description: "Dedicate to focused on study",
             status: "pending",
             category: "Personal Growth",
+            createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
             completedAt: null,
         },
         {
@@ -44,6 +45,7 @@ async function main() {
             description: "Spend time to reading a book or article.",
             status: "completed",
             category: "Personal Growth",
+            createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
             completedAt: daysAgo(2),
         },
         {
@@ -51,6 +53,7 @@ async function main() {
             description: "Drink water to stay hydrated.",
             status: "completed",
             category: "Health",
+            createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
             completedAt: daysAgo(3),
         },
         {
@@ -81,6 +84,7 @@ async function main() {
             where: { title: task.title },
             update: {
                 status: task.status,
+                createdAt: task.createdAt,
                 completedAt: task.completedAt,
             },
             create: {
