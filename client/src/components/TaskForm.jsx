@@ -1,38 +1,14 @@
-import { useState } from "react";
-import api from "../services/api";
+import useTaskForm  from "../hooks/useTaskForm";
 
 export default function TaskForm({ onTaskCreated }) {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("pending");
-    const [category, setCategory] = useState("");
-    const [completedAt, setCompletedAt] = useState("");
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const res = await api.post("/tasks", {
-                title,
-                description,
-                status,
-                category,
-                completedAt:
-                    status === "completed" && completedAt ? completedAt : null,
-            });
-
-            setTitle("");
-            setDescription("");
-            setStatus("pending");
-            setCategory("");
-            setCompletedAt("");
-
-            if (onTaskCreated) {
-                onTaskCreated(res.data);
-            }
-        } catch (err) {
-            alert(err.response?.data?.error || "Error creating task");
-        }
-    };
+    const {
+        title, setTitle,
+        description, setDescription,
+        status, setStatus,
+        category, setCategory,
+        completedAt, setCompletedAt,
+        handleSubmit
+    } = useTaskForm(onTaskCreated);
 
     return (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
@@ -88,19 +64,7 @@ export default function TaskForm({ onTaskCreated }) {
 
                 <button
                     type="submit"
-                    className="
-                        w-full
-                        bg-lime-500
-                        text-white
-                        py-2
-                        rounded-md
-                        font-medium
-                        hover:bg-lime-600
-                        transition
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-lime-400
-                    "
+                    className="w-full bg-lime-500 text-white py-2 rounded-md font-medium hover:bg-lime-600 transition focus:outline-none focus:ring-2 focus:ring-lime-400"
                 >
                     Add Task
                 </button>

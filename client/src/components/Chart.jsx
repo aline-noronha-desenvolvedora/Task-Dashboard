@@ -7,19 +7,12 @@ import {
     Tooltip,
     Legend,
 } from "chart.js";
+import { getTaskStatusCounts } from "../utils/chartUtils";
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-    Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 export default function Chart({ tasks = [] }) {
-    const completed = tasks.filter(t => t.status === "completed").length;
-    const inProgress = tasks.filter(t => t.status === "in_progress").length;
-    const pending = tasks.filter(t => t.status === "pending").length;
+    const { completed, inProgress, pending } = getTaskStatusCounts(tasks);
 
     const data = {
         labels: ["Completed", "In Progress", "Pending"],
