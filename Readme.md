@@ -62,8 +62,10 @@ cd task-dashboard
 cd backend
 npm install
 cp .env.example .env   # configure DATABASE_URL & JWT_SECRET
+cd service
 npx prisma migrate dev
 npx prisma db seed
+npx prisma studio #show data adn user
 npm run dev
 ```
 
