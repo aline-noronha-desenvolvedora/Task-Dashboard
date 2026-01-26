@@ -16,7 +16,7 @@ export default function Dashboard() {
     const { tasks, reloadTasks, loading } = useTasks(filters);
 
     const handleApplyFilters = (newFilters) => {
-        setFilters({ ...newFilters }); 
+        setFilters({ ...newFilters });
     };
 
     return (
@@ -47,8 +47,19 @@ export default function Dashboard() {
                         <Filters onApply={handleApplyFilters} />
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6 h-80">
-                        <Chart tasks={tasks} />
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-lg font-semibold mb-4">Tasks Status</h2>
+                        <Chart type="status" tasks={tasks} />
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-lg font-semibold mb-4">Tasks by Category</h2>
+                        <Chart type="category" tasks={tasks} />
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <h2 className="text-lg font-semibold mb-4">Completed vs Pending by Time</h2>
+                        <Chart type="progressOverTime" tasks={tasks} />
                     </div>
                 </div>
             </div>
