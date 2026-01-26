@@ -16,10 +16,9 @@ export default function TaskForm({ onTaskCreated }) {
                 description,
                 status,
                 category,
-                completedAt: status === "completed" && completedAt ? completedAt : null,
+                completedAt:
+                    status === "completed" && completedAt ? completedAt : null,
             });
-
-            alert("Task created!");
 
             setTitle("");
             setDescription("");
@@ -36,51 +35,74 @@ export default function TaskForm({ onTaskCreated }) {
     };
 
     return (
-        <div className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-4">New Task</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                New Task
+            </h2>
+
+            <form onSubmit={handleSubmit} className="space-y-3">
                 <input
                     type="text"
                     placeholder="Title"
-                    className="w-full px-3 py-2 border rounded"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                 />
+
                 <textarea
                     placeholder="Description"
-                    className="w-full px-3 py-2 border rounded"
+                    rows={3}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm resize-none focus:outline-none focus:ring-2 focus:ring-lime-400"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                 />
-                <select
-                    className="w-full px-3 py-2 border rounded"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                >
-                    <option value="pending">Pending</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                </select>
-                <input
-                    type="text"
-                    placeholder="Category"
-                    className="w-full px-3 py-2 border rounded"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                />
+
+                <div className="grid grid-cols-2 gap-3">
+                    <select
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        value={status}
+                        onChange={(e) => setStatus(e.target.value)}
+                    >
+                        <option value="pending">Pending</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+
+                    <input
+                        type="text"
+                        placeholder="Category"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                    />
+                </div>
+
                 {status === "completed" && (
                     <input
                         type="date"
-                        className="w-full px-3 py-2 border rounded"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-lime-400"
                         value={completedAt}
                         onChange={(e) => setCompletedAt(e.target.value)}
                     />
                 )}
+
                 <button
                     type="submit"
-                    className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                    className="
+                        w-full
+                        bg-lime-500
+                        text-white
+                        py-2
+                        rounded-md
+                        font-medium
+                        hover:bg-lime-600
+                        transition
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-lime-400
+                    "
                 >
-                    Add
+                    Add Task
                 </button>
             </form>
         </div>
