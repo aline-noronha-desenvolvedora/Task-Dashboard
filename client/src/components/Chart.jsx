@@ -25,6 +25,22 @@ ChartJS.register(
 );
 
 export default function Chart({ type, tasks = [] }) {
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 0.8,
+        layout: {
+            padding: { top: 5, bottom: 30, left: 10, right: 10 },
+        },
+        plugins: {
+            legend: {
+                position: "top",
+                labels: { font: { size: 10 }, padding: 6 },
+            },
+            title: { display: false },
+        },
+    };
+
     if (type === "status") {
         const data = {
             labels: ["Completed", "In Progress", "Pending"],
@@ -39,7 +55,12 @@ export default function Chart({ type, tasks = [] }) {
                 },
             ],
         };
-        return <Pie data={data} />;
+
+        return (
+            <div className="h-full flex items-center justify-center">
+                <Pie data={data} options={commonOptions} />
+            </div>
+        );
     }
 
     if (type === "category") {
@@ -48,47 +69,123 @@ export default function Chart({ type, tasks = [] }) {
             const cat = t.category || "No category";
             categories[cat] = (categories[cat] || 0) + 1;
         });
+
         const data = {
             labels: Object.keys(categories),
             datasets: [
                 {
-                    label: "Tasks",
                     data: Object.values(categories),
                     backgroundColor: "#3b82f6",
                 },
             ],
         };
-        return <Bar data={data} />;
+
+        const options = {
+            ...commonOptions,
+            plugins: { ...commonOptions.plugins, legend: { display: false } },
+            scales: {
+                x: { title: { display: true, text: "Category", font: { size: 10 } } },
+                y: { title: { display: true, text: "Tasks", font: { size: 10 } }, beginAtZero: true },
+            },
+        };
+
+        return (
+            <div className="h-full flex items-center justify-center">
+                <Bar data={data} options={options} />
+            </div>
+        );
     }
 
     if (type === "progressOverTime") {
         const mapByDate = {};
+
         tasks.forEach(t => {
-            const date = t.createdAt?.slice(0, 10);
-            if (!mapByDate[date]) mapByDate[date] = { completed: 0, pending: 0 };
-            if (t.status === "completed") mapByDate[date].completed += 1;
-            else mapByDate[date].pending += 1;
+            let rawDate;
+            if (t.status === "completed") {
+                rawDate = t.completedAt || t.createdAt;
+            } else {
+                rawDate = t.createdAt;
+            }
+
+            const date = rawDate ? new Date(rawDate).toISOString().slice(0, 10) : null;
+            if (!date) return;
+
+            if (!mapByDate[date]) {
+                mapByDate[date] = { completed: 0, inProgress: 0, pending: 0 };
+            }
+
+            if (t.status === "completed") {
+                mapByDate[date].completed += 1;
+            } else if (t.status === "in_progress") {
+                mapByDate[date].inProgress += 1;
+            } else if (t.status === "pending") {
+                mapByDate[date].pending += 1;
+            }
         });
 
-        const labels = Object.keys(mapByDate).sort();
+        const labels = [];
+        const today = new Date();
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date(today);
+            d.setDate(today.getDate() - i);
+            labels.push(d.toLocaleDateString("en-US", { weekday: "short" }));
+        }
+
         const data = {
             labels,
             datasets: [
                 {
                     label: "Completed",
-                    data: labels.map(d => mapByDate[d].completed),
+                    data: labels.map((_, idx) => {
+                        const d = new Date(today);
+                        d.setDate(today.getDate() - (6 - idx));
+                        const key = d.toISOString().slice(0, 10);
+                        return mapByDate[key]?.completed || 0;
+                    }),
                     borderColor: "#22c55e",
-                    backgroundColor: "#22c55e",
+                    backgroundColor: "rgba(34, 197, 94, 0.3)",
+                    tension: 0.3,
+                },
+                {
+                    label: "In Progress",
+                    data: labels.map((_, idx) => {
+                        const d = new Date(today);
+                        d.setDate(today.getDate() - (6 - idx));
+                        const key = d.toISOString().slice(0, 10);
+                        return mapByDate[key]?.inProgress || 0;
+                    }),
+                    borderColor: "#3b82f6",
+                    backgroundColor: "rgba(59, 130, 246, 0.3)",
+                    tension: 0.3,
                 },
                 {
                     label: "Pending",
-                    data: labels.map(d => mapByDate[d].pending),
-                    borderColor: "#f87171",
-                    backgroundColor: "#f87171",
+                    data: labels.map((_, idx) => {
+                        const d = new Date(today);
+                        d.setDate(today.getDate() - (6 - idx));
+                        const key = d.toISOString().slice(0, 10);
+                        return mapByDate[key]?.pending || 0;
+                    }),
+                    borderColor: "#facc15",
+                    backgroundColor: "rgba(250, 204, 21, 0.3)",
+                    tension: 0.3,
                 },
             ],
         };
-        return <Line data={data} />;
+
+        const options = {
+            ...commonOptions,
+            scales: {
+                x: { title: { display: true, text: "Day of Week", font: { size: 10 } } },
+                y: { title: { display: true, text: "Tasks", font: { size: 10 } }, beginAtZero: true },
+            },
+        };
+
+        return (
+            <div className="h-full flex items-center justify-center">
+                <Line data={data} options={options} />
+            </div>
+        );
     }
 
     return null;

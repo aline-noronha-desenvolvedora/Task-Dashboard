@@ -28,11 +28,11 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white rounded-xl shadow-md p-6">
+                    <div className="bg-white rounded-xl shadow-md p-4">
                         <TaskForm onTaskCreated={reloadTasks} />
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6">
+                    <div className="bg-white rounded-xl shadow-md p-4">
                         {loading ? (
                             <p className="text-gray-500">Loading tasks...</p>
                         ) : (
@@ -42,23 +42,23 @@ export default function Dashboard() {
                 </div>
 
                 <div className="space-y-6">
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h2 className="text-lg font-semibold mb-4">Filters</h2>
+                    <div className="bg-white rounded-xl shadow-md p-4">
+                        <h2 className="text-lg font-semibold mb-2">Filters</h2>
                         <Filters onApply={handleApplyFilters} />
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h2 className="text-lg font-semibold mb-4">Tasks Status</h2>
+                    <div className="bg-white rounded-xl shadow-md p-4 h-96">
+                        <h2 className="text-lg font-semibold mb-2">Tasks Status</h2>
                         <Chart type="status" tasks={tasks} />
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h2 className="text-lg font-semibold mb-4">Tasks by Category</h2>
+                    <div className="bg-white rounded-xl shadow-md p-4 h-96">
+                        <h2 className="text-lg font-semibold mb-2">Tasks by Category</h2>
                         <Chart type="category" tasks={tasks} />
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <h2 className="text-lg font-semibold mb-4">Completed vs Pending by Time</h2>
+                    <div className="bg-white rounded-xl shadow-md p-4 h-96">
+                        <h2 className="text-lg font-semibold mb-2">Tasks Progress Over Last 7 Days</h2>
                         <Chart type="progressOverTime" tasks={tasks} />
                     </div>
                 </div>
