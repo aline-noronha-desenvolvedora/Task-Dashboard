@@ -8,14 +8,19 @@ export default function useTasks(filters = {}) {
     const loadTasks = async () => {
         setLoading(true);
         try {
-            const sanitizedFilters = { ...filters };
-            Object.keys(sanitizedFilters).forEach(
-                (key) => sanitizedFilters[key] === "" && delete sanitizedFilters[key]
-            );
-            if (sanitizedFilters.status === "all") delete sanitizedFilters.status;
+            const data = await taskService.getTasks();
+            const allTasks = Array.isArray(data) ? data : [];
 
-            const data = await taskService.getTasks(sanitizedFilters);
-            setTasks(Array.isArray(data) ? data : []);
+            const filtered = allTasks.filter(task => {
+                const statusMatch = !filters.status || filters.status === "all" || task.status === filters.status;
+                const categoryMatch = !filters.category || task.category.includes(filters.category);
+                const dateMatch =
+                    !filters.date ||
+                    new Date(task.createdAt).toISOString().slice(0, 10) === filters.date;
+                return statusMatch && categoryMatch && dateMatch;
+            });
+
+            setTasks(filtered);
         } catch (err) {
             console.error("Error loading tasks:", err);
             setTasks([]);

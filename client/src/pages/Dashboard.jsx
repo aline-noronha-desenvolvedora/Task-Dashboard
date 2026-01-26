@@ -16,12 +16,7 @@ export default function Dashboard() {
     const { tasks, reloadTasks, loading } = useTasks(filters);
 
     const handleApplyFilters = (newFilters) => {
-        const sanitizedFilters = { ...newFilters };
-        Object.keys(sanitizedFilters).forEach(
-            (key) => sanitizedFilters[key] === "" && delete sanitizedFilters[key]
-        );
-        if (sanitizedFilters.status === "all") delete sanitizedFilters.status;
-        setFilters({ ...sanitizedFilters });
+        setFilters({ ...newFilters }); 
     };
 
     return (
