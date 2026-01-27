@@ -29,7 +29,7 @@ Back-end: Node.js + Express + Prisma + SQLite
 ```text
 frontend/
 ├── src/
-│   ├── components/          # TaskForm.jsx, TaskList.jsx, Filters.jsx, chats/
+│   ├── components/          # TaskForm.jsx, TaskList.jsx, Filters.jsx, charts/
 │   ├── pages/               # Dashboard.jsx, Login.jsx, Register.jsx
 │   ├── hooks/               # useTasks.js, useAuth.js
 │   ├── services/            # api.js, taskService.js, authService.js
