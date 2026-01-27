@@ -29,18 +29,18 @@ Back-end: Node.js + Express + Prisma + SQLite
 ```text
 frontend/
 ├── src/
-│   ├── components/  # TaskForm, TaskList, Filters, Chart
-│   ├── pages/       # Dashboard, Login, Register
-│   ├── hooks/       # useTasks, useAuth
-│   └── services/    # api.js, taskService.js, authService.js
+│   ├── components/          # TaskForm.jsx, TaskList.jsx, Filters.jsx, chats/
+│   ├── pages/               # Dashboard.jsx, Login.jsx, Register.jsx
+│   ├── hooks/               # useTasks.js, useAuth.js
+│   ├── services/            # api.js, taskService.js, authService.js
+│   └── utils/               # chartUtils.js
 │
 backend/
 ├── src/
 │   ├── application/services/   # taskService.js
-│   ├── domain/entities          # Task.js
-│   ├── infrastructure/          # config, providers, repositories
-│   └── presentation/            # controllers, routes, middlewares
-├── prisma/schema.prisma
+│   ├── domain/entities/        # Task.js
+│   ├── infrastructure/         # config/, providers/, repositories/, prisma/
+│   └── presentation/           # controllers/, routes/, middlewares/
 ```
 
 ---
