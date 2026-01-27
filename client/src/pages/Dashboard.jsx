@@ -2,8 +2,11 @@ import { useState } from "react";
 import TaskList from "../components/TaskList";
 import TaskForm from "../components/TaskForm";
 import Filters from "../components/Filters";
-import Chart from "../components/Chart";
 import useTasks from "../hooks/useTasks";
+
+import StatusChart from "../components/charts/StatusChart";
+import CategoryChart from "../components/charts/CategoryChart";
+import ProgressOverTimeChart from "../components/charts/ProgressOverTimeChart";
 
 export default function Dashboard() {
     const [filters, setFilters] = useState({
@@ -49,17 +52,17 @@ export default function Dashboard() {
 
                     <div className="bg-white rounded-xl shadow-md p-4 h-96">
                         <h2 className="text-lg font-semibold mb-2">Tasks Status</h2>
-                        <Chart type="status" tasks={tasks} />
+                        <StatusChart tasks={tasks} />
                     </div>
 
                     <div className="bg-white rounded-xl shadow-md p-4 h-96">
                         <h2 className="text-lg font-semibold mb-2">Tasks by Category</h2>
-                        <Chart type="category" tasks={tasks} />
+                        <CategoryChart tasks={tasks} />
                     </div>
 
                     <div className="bg-white rounded-xl shadow-md p-4 h-96">
                         <h2 className="text-lg font-semibold mb-2">Tasks Progress Over Last 7 Days</h2>
-                        <Chart type="progressOverTime" tasks={tasks} />
+                        <ProgressOverTimeChart tasks={tasks} />
                     </div>
                 </div>
             </div>
