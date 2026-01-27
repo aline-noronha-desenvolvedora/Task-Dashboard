@@ -26,7 +26,10 @@ export async function getTaskById(req, res) {
 export async function getAllTasks(req, res) {
     try {
         const userId = req.user.id;
-        const tasks = await taskService.getTasks({}, userId); 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const tasks = await taskService.getTasks({}, userId, page, limit);
         res.json(tasks);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -36,8 +39,15 @@ export async function getAllTasks(req, res) {
 export async function getFilteredTasks(req, res) {
     try {
         const userId = req.user.id;
-        const filters = req.query;
-        const tasks = await taskService.getTasks(filters, userId);
+        const { page, limit, ...filters } = req.query;
+
+        const tasks = await taskService.getTasks(
+            filters,
+            userId,
+            parseInt(page) || 1,
+            parseInt(limit) || 10
+        );
+
         res.json(tasks);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -49,7 +59,11 @@ export async function updateTask(req, res) {
         const error = validateTaskUpdate(req.body);
         if (error) return res.status(400).json({ error });
 
-        const task = await taskService.updateTask(req.params.id, req.body, req.user.id);
+        const task = await taskService.updateTask(
+            req.params.id,
+            req.body,
+            req.user.id
+        );
         res.json(task);
     } catch (err) {
         res.status(400).json({ error: err.message });

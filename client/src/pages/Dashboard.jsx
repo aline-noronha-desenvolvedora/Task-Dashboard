@@ -16,10 +16,14 @@ export default function Dashboard() {
         orderBy: "createdAt",
     });
 
-    const { tasks, reloadTasks, loading } = useTasks(filters);
+    const [page, setPage] = useState(1);
+    const limit = 5; 
+
+    const { tasks, reloadTasks, loading, totalPages } = useTasks(filters, page, limit);
 
     const handleApplyFilters = (newFilters) => {
         setFilters({ ...newFilters });
+        setPage(1); 
     };
 
     return (
@@ -39,7 +43,12 @@ export default function Dashboard() {
                         {loading ? (
                             <p className="text-gray-500">Loading tasks...</p>
                         ) : (
-                            <TaskList tasks={tasks} />
+                            <TaskList
+                                tasks={tasks}
+                                page={page}
+                                setPage={setPage}
+                                totalPages={totalPages}
+                            />
                         )}
                     </div>
                 </div>

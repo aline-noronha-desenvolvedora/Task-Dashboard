@@ -12,9 +12,26 @@ async function getTaskById(id, userId) {
     return task ? new Task(task) : null;
 }
 
-async function getTasks(filters, userId) { 
-    const { orderBy, orderDirection, ...rest } = filters; 
-    return await taskRepository.findByFilters({ ...rest, userId }, orderBy, orderDirection); }
+async function getTasks(filters, userId, page = 1, limit = 10) {
+    const { orderBy, orderDirection, ...rest } = filters;
+
+    const result = await taskRepository.findByFilters(
+        { ...rest, userId },
+        orderBy,
+        orderDirection,
+        page,
+        limit
+    );
+
+    const tasks = result.tasks.map(t => new Task(t));
+
+    return {
+        tasks,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages
+    };
+}
 
 async function updateTask(id, data, userId) {
     const task = await taskRepository.update(id, data, userId);
@@ -25,4 +42,10 @@ async function deleteTask(id, userId) {
     return await taskRepository.remove(id, userId);
 }
 
-export default { createTask, getTaskById, getTasks, updateTask, deleteTask };
+export default {
+    createTask,
+    getTaskById,
+    getTasks,
+    updateTask,
+    deleteTask
+};

@@ -1,29 +1,25 @@
 import { useState, useEffect } from "react";
 import taskService from "../services/taskService";
 
-export default function useTasks(filters = {}) {
+export default function useTasks(filters = {}, page = 1, limit = 10) {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [totalPages, setTotalPages] = useState(1);
+    const [total, setTotal] = useState(0);
 
     const loadTasks = async () => {
         setLoading(true);
         try {
-            const data = await taskService.getTasks();
-            const allTasks = Array.isArray(data) ? data : [];
+            const data = await taskService.getTasks(filters, page, limit);
 
-            const filtered = allTasks.filter(task => {
-                const statusMatch = !filters.status || filters.status === "all" || task.status === filters.status;
-                const categoryMatch = !filters.category || task.category.includes(filters.category);
-                const dateMatch =
-                    !filters.date ||
-                    new Date(task.createdAt).toISOString().slice(0, 10) === filters.date;
-                return statusMatch && categoryMatch && dateMatch;
-            });
-
-            setTasks(filtered);
+            setTasks(data.tasks || []);
+            setTotal(data.total || 0);
+            setTotalPages(data.totalPages || 1);
         } catch (err) {
             console.error("Error loading tasks:", err);
             setTasks([]);
+            setTotal(0);
+            setTotalPages(1);
         } finally {
             setLoading(false);
         }
@@ -31,7 +27,13 @@ export default function useTasks(filters = {}) {
 
     useEffect(() => {
         loadTasks();
-    }, [JSON.stringify(filters)]);
+    }, [JSON.stringify(filters), page, limit]);
 
-    return { tasks, loading, reloadTasks: loadTasks };
+    return {
+        tasks,
+        loading,
+        total,
+        totalPages,
+        reloadTasks: loadTasks
+    };
 }
