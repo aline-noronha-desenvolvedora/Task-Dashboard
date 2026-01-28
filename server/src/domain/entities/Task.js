@@ -1,10 +1,12 @@
 export default class Task {
-    constructor({ id, title, description, completed, userId, createdAt, updatedAt }) {
+    constructor({ id, title, description, status, category, completedAt, createdAt, userId }) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.completed = completed ?? false;
-        this.userId = userId;
+        this.status = status;
+        this.category = category;
+        this.completedAt = completedAt;
         this.createdAt = createdAt;
+        this.userId = userId;
     }
 }

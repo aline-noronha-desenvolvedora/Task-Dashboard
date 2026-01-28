@@ -12,39 +12,39 @@ async function findById(id, userId) {
 
 async function findByFilters(
     filters,
-    orderBy,
-    orderDirection,
+    orderBy = "createdAt",
+    orderDirection = "desc",
     page = 1,
     limit = 10
 ) {
-    const { userId, title, status } = filters;
+    const { userId, status, category, date } = filters;
+    const skip = (Number(page) - 1) * Number(limit);
+    const take = Number(limit);
 
-    const skip = (page - 1) * limit;
+    const where = {
+        userId: userId,
+        ...(status && status !== "all" && { status }),
+        ...(category && { category }),
+        ...(date && date !== "" && {
+            createdAt: new Date(date + "T00:00:00.000Z")
+        })
+    };
 
-    const tasks = await prisma.task.findMany({
-        where: {
-            userId,
-            ...(title ? { title: { contains: title } } : {}),
-            ...(status ? { status } : {})
-        },
-        orderBy: orderBy ? { [orderBy]: orderDirection || "asc" } : undefined,
-        skip,
-        take: limit
-    });
-
-    const total = await prisma.task.count({
-        where: {
-            userId,
-            ...(title ? { title: { contains: title } } : {}),
-            ...(status ? { status } : {})
-        }
-    });
+    const [tasks, total] = await prisma.$transaction([
+        prisma.task.findMany({
+            where,
+            orderBy: { [orderBy]: orderDirection },
+            skip,
+            take
+        }),
+        prisma.task.count({ where })
+    ]);
 
     return {
         tasks,
         total,
-        page,
-        totalPages: Math.ceil(total / limit)
+        page: Number(page),
+        totalPages: Math.ceil(total / take)
     };
 }
 

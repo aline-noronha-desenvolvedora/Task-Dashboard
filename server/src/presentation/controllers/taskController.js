@@ -28,26 +28,8 @@ export async function getAllTasks(req, res) {
         const userId = req.user.id;
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
-
-        const tasks = await taskService.getTasks({}, userId, page, limit);
-        res.json(tasks);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-}
-
-export async function getFilteredTasks(req, res) {
-    try {
-        const userId = req.user.id;
-        const { page, limit, ...filters } = req.query;
-
-        const tasks = await taskService.getTasks(
-            filters,
-            userId,
-            parseInt(page) || 1,
-            parseInt(limit) || 10
-        );
-
+        
+        const tasks = await taskService.getTasks(req.query, userId, page, limit);
         res.json(tasks);
     } catch (error) {
         res.status(400).json({ error: error.message });

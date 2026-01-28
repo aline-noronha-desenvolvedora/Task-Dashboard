@@ -26,11 +26,6 @@ export default function Filters({ onApply }) {
 
             <input type="date" name="date" value={localFilters.date} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
 
-            <select name="orderBy" value={localFilters.orderBy} onChange={handleChange} className="w-full border px-3 py-2 rounded">
-                <option value="createdAt">Creation date</option>
-                <option value="status">Status</option>
-            </select>
-
             <button onClick={() => onApply(localFilters)} className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
                 Apply filters
             </button>

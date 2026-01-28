@@ -22,7 +22,7 @@ model Task {
   status      String
   category    String?
   completedAt DateTime?
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime  @db.Date
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
 }

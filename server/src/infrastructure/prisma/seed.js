@@ -30,7 +30,7 @@ async function main() {
             description: "Dedicate to focused on study",
             status: "pending",
             category: "Personal Growth",
-            createdAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
+            createdAt: new Date("2026-01-27"),
             completedAt: null,
         },
         {
@@ -38,6 +38,7 @@ async function main() {
             description: "Go for a 5 km run to stay healthy",
             status: "in_progress",
             category: "Fitness",
+            createdAt: new Date("2026-01-28"),
             completedAt: null,
         },
         {
@@ -45,7 +46,7 @@ async function main() {
             description: "Spend time to reading a book or article.",
             status: "completed",
             category: "Personal Growth",
-            createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+            createdAt: new Date("2026-01-25"),
             completedAt: daysAgo(2),
         },
         {
@@ -53,7 +54,7 @@ async function main() {
             description: "Drink water to stay hydrated.",
             status: "completed",
             category: "Health",
-            createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+            createdAt: new Date("2026-01-23"),
             completedAt: daysAgo(3),
         },
         {
@@ -61,6 +62,7 @@ async function main() {
             description: "Sleeping to improve health.",
             status: "in_progress",
             category: "Health",
+            createdAt: new Date("2026-01-28"),
             completedAt: null,
         },
         {
@@ -68,6 +70,7 @@ async function main() {
             description: "Practice mindfulness meditation.",
             status: "pending",
             category: "Wellness",
+            createdAt: new Date("2026-01-28"),
             completedAt: null,
         },
         {
@@ -75,6 +78,7 @@ async function main() {
             description: "Complete the final draft of the project report.",
             status: "in_progress",
             category: "Work",
+            createdAt: new Date("2026-01-28"),
             completedAt: null,
         }
     ];
