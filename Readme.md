@@ -3,7 +3,7 @@
 A fullstack task management app with authentication, CRUD operations, and a dashboard with charts.
 
 Front-end: React + TailwindCSS  
-Back-end: Node.js + Express + Prisma + SQLite  
+Back-end: Node.js + Express + Prisma + Mysql
 
 ---
 
@@ -20,28 +20,8 @@ Back-end: Node.js + Express + Prisma + SQLite
 
 **Front-end:** React, React Router, Axios, Chart.js, Tailwind CSS  
 **Back-end:** Node.js, Express, JWT, Prisma, Bcrypt  
-**Database:** SQLite (`dev.db` via Prisma)  
+**Database:** Mysql
 
----
-
-## Project Structure
-
-```text
-frontend/
-├── src/
-│   ├── components/          # TaskForm.jsx, TaskList.jsx, Filters.jsx, charts/
-│   ├── pages/               # Dashboard.jsx, Login.jsx, Register.jsx
-│   ├── hooks/               # useTasks.js, useAuth.js
-│   ├── services/            # api.js, taskService.js, authService.js
-│   └── utils/               # chartUtils.js
-│
-backend/
-├── src/
-│   ├── application/services/   # taskService.js
-│   ├── domain/entities/        # Task.js
-│   ├── infrastructure/         # config/, providers/, repositories/, prisma/
-│   └── presentation/           # controllers/, routes/, middlewares/
-```
 
 ---
 
@@ -59,60 +39,60 @@ cd task-dashboard
 ### 2. Back-end setup
 
 #### Install the back-end dependencies
+```bash
 cd server
-
 npm install
+```
 
 #### Configure the environment variables
-touch .env
-
-DATABASE_URL="mysql://taskdashboard:SenhaSegura123@localhost:3306/TaskDashboardDB"
-
+```bash
+DATABASE_URL="your connection here"
 JWT_SECRET="Admin123!"
-
 JWT_EXPIRES_IN="1h"
-
 PORT=3000
-
+```
 #### Start MySQL and Create Database (Linux)
+```bash
 sudo service mysql start
-
 mysql -u root -p
-
 CREATE DATABASE TaskDashboardDB;
-
 EXIT;
+```
 
 #### Create the prisma migrations
+```bash
 cd server/src/infrastructure/prisma
-
 npx prisma migrate dev --name init
-
+```
 #### Run the Prisma migrations
+```bash
 cd ../
-
 npx prisma db seed
+```
 
 #### View the data in Prisma Studio (Optional)
+```bash
 npx prisma studio
+```
 
 #### Start the back-end server
+```bash
 cd ../..
-
 npm run dev
+```
 
 ### 3. Front-end setup
-
 #### Install the front-end dependencies
-In another terminal: 
-
+In another terminal:
+```bash
 cd client
-
 npm install
+```
 
 #### Start the development server
-
+```bash
 npm run dev
+```
 
 Vite will display the URL to access the application in the browser, usually:
 
@@ -132,10 +112,4 @@ Admin user created via seed:
 ## Postman Collection
 
 Import the collection to test the API:
-[Task Dashboard Collection](https://.postman.co/workspace/My-Workspace~597093ab-78d5-4b81-856c-c40fd9bf8fd4/collection/21196668-401d7fd5-f211-4fcf-9f37-89e83b941d83?action=share&creator=21196668)
-
----
-
-## Conclusion
-
-Complete task management project with integrated front-end and back-end, authentication, CRUD, filters, charts, and layered architecture—ready for use and future extensions.
+[Task Dashboard Collection](https://www.postman.com/spaceflight-technologist-58832279/task-dashboard/collection/21196668-401d7fd5-f211-4fcf-9f37-89e83b941d83/?action=share&creator=21196668)
