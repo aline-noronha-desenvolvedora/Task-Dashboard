@@ -10,22 +10,43 @@ export default function useTaskForm(onTaskCreated) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!title.trim()) {
+            alert("The title is need");
+            return;
+        }
+
         try {
-            await taskService.createTask({
-                title,
-                description,
-                status,
-                category,
-                completedAt: status === "completed" ? completedAt : null,
-            });
+            const now = new Date();
+
+            const payload = {
+                title: title.trim(),
+                description: description.trim() || null,
+                status: status,
+                category: category.trim() || null,
+                createdAt: now.toISOString(),
+            };
+
+            if (status === "completed") {
+                payload.completedAt = completedAt
+                    ? new Date(completedAt).toISOString()
+                    : now.toISOString();
+            } else {
+                payload.completedAt = null;
+            }
+            
+            await taskService.createTask(payload);
+
             setTitle("");
             setDescription("");
             setStatus("pending");
             setCategory("");
             setCompletedAt("");
+
             if (onTaskCreated) onTaskCreated();
+
         } catch (err) {
-            console.error("Error creating task:", err);
+            const serverError = err.response?.data?.error || err.response?.data || "";
         }
     };
 
