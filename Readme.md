@@ -29,18 +29,18 @@ Back-end: Node.js + Express + Prisma + SQLite
 ```text
 frontend/
 ├── src/
-│   ├── components/  # TaskForm, TaskList, Filters, Chart
-│   ├── pages/       # Dashboard, Login, Register
-│   ├── hooks/       # useTasks, useAuth
-│   └── services/    # api.js, taskService.js, authService.js
+│   ├── components/          # TaskForm.jsx, TaskList.jsx, Filters.jsx, charts/
+│   ├── pages/               # Dashboard.jsx, Login.jsx, Register.jsx
+│   ├── hooks/               # useTasks.js, useAuth.js
+│   ├── services/            # api.js, taskService.js, authService.js
+│   └── utils/               # chartUtils.js
 │
 backend/
 ├── src/
 │   ├── application/services/   # taskService.js
-│   ├── domain/entities          # Task.js
-│   ├── infrastructure/          # config, providers, repositories
-│   └── presentation/            # controllers, routes, middlewares
-├── prisma/schema.prisma
+│   ├── domain/entities/        # Task.js
+│   ├── infrastructure/         # config/, providers/, repositories/, prisma/
+│   └── presentation/           # controllers/, routes/, middlewares/
 ```
 
 ---
@@ -58,28 +58,65 @@ cd task-dashboard
 
 ### 2. Back-end setup
 
-```bash
-cd backend
-npm install
-cp .env.example .env   # configure DATABASE_URL & JWT_SECRET
-cd service
-npx prisma migrate dev
-npx prisma db seed
-npx prisma studio #show data adn user
-npm run dev
-```
+#### Install the back-end dependencies
+cd server
 
----
+npm install
+
+#### Configure the environment variables
+touch .env
+
+DATABASE_URL="mysql://taskdashboard:SenhaSegura123@localhost:3306/TaskDashboardDB"
+
+JWT_SECRET="Admin123!"
+
+JWT_EXPIRES_IN="1h"
+
+PORT=3000
+
+#### Start MySQL and Create Database (Linux)
+sudo service mysql start
+
+mysql -u root -p
+
+CREATE DATABASE TaskDashboardDB;
+
+EXIT;
+
+#### Create the prisma migrations
+cd server/src/infrastructure/prisma
+
+npx prisma migrate dev --name init
+
+#### Run the Prisma migrations
+cd ../
+
+npx prisma db seed
+
+#### View the data in Prisma Studio (Optional)
+npx prisma studio
+
+#### Start the back-end server
+cd ../..
+
+npm run dev
 
 ### 3. Front-end setup
 
-In another terminal:
+#### Install the front-end dependencies
+In another terminal: 
 
-```bash
-cd frontend
+cd client
+
 npm install
+
+#### Start the development server
+
 npm run dev
-```
+
+Vite will display the URL to access the application in the browser, usually:
+
+http://localhost:5173/
 
 ---
 
